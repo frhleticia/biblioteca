@@ -4,8 +4,6 @@ import com.db.biblioteca.dto.LocatarioRequest;
 import com.db.biblioteca.service.LocatarioService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Scanner;
-
 public class LocatarioController {
     private final LocatarioService locatarioService;
 
