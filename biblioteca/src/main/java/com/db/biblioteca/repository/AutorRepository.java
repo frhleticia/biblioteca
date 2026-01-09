@@ -1,7 +1,6 @@
 package com.db.biblioteca.repository;
 
 import com.db.biblioteca.model.Autor;
-import com.db.biblioteca.model.Locatario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class AutorRepository {
         autores.remove(autor);
     }
 
-    public List<Autor> getLocatarios() {
+    public List<Autor> getAutores() {
         return autores;
     }
 }
