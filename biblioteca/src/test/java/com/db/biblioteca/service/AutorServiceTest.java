@@ -1,6 +1,7 @@
 package com.db.biblioteca.service;
 
 import com.db.biblioteca.model.Autor;
+import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.AutorRepository;
 import com.db.biblioteca.repository.LivroRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,7 +23,8 @@ public class AutorServiceTest {
     void setup() {
         AutorRepository autorRepository = new AutorRepository();
         LivroRepository livroRepository = new LivroRepository();
-        autorService = new AutorService(autorRepository, livroService);
+
+        autorService = new AutorService(autorRepository);
         livroService = new LivroService(livroRepository, autorService);
     }
 
@@ -40,9 +43,9 @@ public class AutorServiceTest {
     @Test
     void deveLancarExcecaoQuandoCpfRepetidoQuandoAtualizarAutor() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        autorService.criarAutor("Maria", "NB", Year.of(2005), "11188833399");
 
-        autorService.criarAutor("Joana", "M", Year.of(2005), "joao@email.com");
+        autorService.criarAutor("Joana", "M", Year.of(2005), "12345678901");
 
         assertThrows(RuntimeException.class, () -> autorService.atualizarAutor(1L, "Maria", "NB", Year.of(2005), "12345678901"));
     }
@@ -86,12 +89,14 @@ public class AutorServiceTest {
     @Test
     void deveRetornarListaDeLivrosQuandoPessoaExistente() {
 
-        livroService.criarLivro("Odisseia", "00998877665", LocalDate.of(2010, 10, 10));
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        Livro odisseia = livroService.criarLivro("Odisseia", "00998877665", LocalDate.of(2010, 10, 10));
+        Autor maria = autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
 
-        String listaDeLivros = autorService.listarLivrosPorAutor(1L);
+        livroService.vincularAutorAoLivro(maria.getId(), odisseia.getId());
 
-        assertTrue(listaDeLivros.contains("Odisseia"));
+        List<Livro> listaDeLivros = livroService.listarLivrosPorAutor(maria.getId());
+
+        assertTrue(listaDeLivros.contains(odisseia));
     }
 
     //Remover pessoa
@@ -121,7 +126,7 @@ public class AutorServiceTest {
     @Test
     void deveLancarExcecaoQuandoNomeNulo() {
 
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("null", "NB", Year.of(2005), "12345678901"));
+        assertThrows(RuntimeException.class, () -> autorService.criarAutor(null, "NB", Year.of(2005), "12345678901"));
     }
 
     @Test

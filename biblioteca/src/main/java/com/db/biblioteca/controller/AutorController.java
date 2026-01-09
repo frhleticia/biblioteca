@@ -4,6 +4,7 @@ import com.db.biblioteca.dto.AutorRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.service.AutorService;
+import com.db.biblioteca.service.LivroService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +13,11 @@ import java.util.List;
 @RequestMapping("/autores")
 public class AutorController {
     private final AutorService autorService;
+    private final LivroService livroService;
 
-    public AutorController(AutorService autorService) {
+    public AutorController(AutorService autorService, LivroService livroService) {
         this.autorService = autorService;
+        this.livroService = livroService;
     }
 
     @PostMapping
@@ -24,7 +27,7 @@ public class AutorController {
 
     @PostMapping("/{autorId}/livros/{livroId}")
     public void atribuirUmLivroAUmAutor(@PathVariable Long autorId, @PathVariable Long livroId) {
-        autorService.atribuirLivroAoAutor(autorId, livroId);
+        livroService.vincularAutorAoLivro(autorId, livroId);
     }
 
     @PutMapping("/{id}")

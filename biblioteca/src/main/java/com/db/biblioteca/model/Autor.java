@@ -1,6 +1,7 @@
 package com.db.biblioteca.model;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Autor {
@@ -9,14 +10,13 @@ public class Autor {
     private String sexo;
     private Year anoNasc;
     private String cpf;
-    private List<Livro> livros;
+    private List<Livro> livros = new ArrayList<>();
 
-    public Autor(String nome, String sexo, Year anoNasc, String cpf, List<Livro> livros) {
+    public Autor(String nome, String sexo, Year anoNasc, String cpf) {
         this.nome = nome;
         this.sexo = sexo;
         this.anoNasc = anoNasc;
         this.cpf = cpf;
-        this.livros = livros;
     }
 
     @Override
@@ -27,15 +27,7 @@ public class Autor {
                 ", sexo='" + sexo + '\'' +
                 ", anoNasc=" + anoNasc +
                 ", cpf='" + cpf + '\'' +
-                ", livros=" + livros +
                 '}';
-    }
-
-    public void adicionarLivro(Livro livro) {
-        if (!livros.contains(livro)){
-            livros.add(livro);
-            livro.getAutores().add(this);
-        }
     }
 
     public Long getId() {
@@ -80,9 +72,5 @@ public class Autor {
 
     public List<Livro> getLivros() {
         return livros;
-    }
-
-    public void setLivros(List<Livro> livros) {
-        this.livros = livros;
     }
 }
