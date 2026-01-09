@@ -44,8 +44,8 @@ public class LocatarioService {
         loc.setCpf(cpf);
     }
 
-    public String listarTodosLocatarios() {
-        return locatarioRepository.getLocatarios().toString();
+    public void listarTodosLocatarios() {
+        locatarioRepository.getLocatarios().toString();
     }
 
     public void removerLocatario(Long locId) {

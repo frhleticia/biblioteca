@@ -4,6 +4,8 @@ import com.db.biblioteca.dto.LocatarioRequest;
 import com.db.biblioteca.service.LocatarioService;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/locatarios")
 public class LocatarioController {
     private final LocatarioService locatarioService;
 
@@ -17,8 +19,8 @@ public class LocatarioController {
     }
 
     @PutMapping("/{id}")
-    public void atualizarLocatario(@PathVariable Long locId, @RequestBody LocatarioRequest request) {
-        locatarioService.atualizarLocatario(locId, request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf());
+    public void atualizarLocatario(@PathVariable Long id, @RequestBody LocatarioRequest request) {
+        locatarioService.atualizarLocatario(id, request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf());
     }
 
     @GetMapping
@@ -27,9 +29,7 @@ public class LocatarioController {
     }
 
     @DeleteMapping("/{id}")
-    public void removerLocatario(@PathVariable Long locId) {
-        locatarioService.removerLocatario(locId);
+    public void removerLocatario(@PathVariable Long id) {
+        locatarioService.removerLocatario(id);
     }
-
-
 }

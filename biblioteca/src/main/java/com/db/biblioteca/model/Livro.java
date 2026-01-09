@@ -6,15 +6,15 @@ import java.util.List;
 public class Livro {
     private Long id;
     private String nome;
-    private Long isbn;
+    private String isbn;
     private LocalDate dataPublicacao;
-    private List<Autor> autoresDoLivro;
+    private List<Autor> autores;
 
-    public Livro(String nome, Long isbn, LocalDate dataPublicacao, List<Autor> autoresDoLivro) {
+    public Livro(String nome, String isbn, LocalDate dataPublicacao, List<Autor> autores) {
         this.nome = nome;
         this.isbn = isbn;
         this.dataPublicacao = dataPublicacao;
-        this.autoresDoLivro = autoresDoLivro;
+        this.autores = autores;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Livro {
                 ", nome='" + nome + '\'' +
                 ", isbn=" + isbn +
                 ", dataPublicacao=" + dataPublicacao +
-                ", autoresDoLivro=" + autoresDoLivro +
+                ", autores=" + autores +
                 '}';
     }
 
@@ -44,11 +44,11 @@ public class Livro {
         this.nome = nome;
     }
 
-    public Long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(Long isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
@@ -60,11 +60,11 @@ public class Livro {
         this.dataPublicacao = dataPublicacao;
     }
 
-    public List<Autor> getAutoresDoLivro() {
-        return autoresDoLivro;
+    public List<Autor> getAutores() {
+        return autores;
     }
 
-    public void setAutoresDoLivro(List<Autor> autoresDoLivro) {
-        this.autoresDoLivro = autoresDoLivro;
+    public void setAutores(List<Autor> autores) {
+        this.autores = autores;
     }
 }

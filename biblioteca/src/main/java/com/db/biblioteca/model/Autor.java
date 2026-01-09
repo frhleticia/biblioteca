@@ -1,17 +1,17 @@
 package com.db.biblioteca.model;
 
-import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 
 public class Autor {
     private Long id;
     private String nome;
     private String sexo;
-    private LocalDate anoNasc;
+    private Year anoNasc;
     private String cpf;
     private List<Livro> livros;
 
-    public Autor(String nome, String sexo, LocalDate anoNasc, String cpf, List<Livro> livros) {
+    public Autor(String nome, String sexo, Year anoNasc, String cpf, List<Livro> livros) {
         this.nome = nome;
         this.sexo = sexo;
         this.anoNasc = anoNasc;
@@ -29,6 +29,13 @@ public class Autor {
                 ", cpf='" + cpf + '\'' +
                 ", livros=" + livros +
                 '}';
+    }
+
+    public void adicionarLivro(Livro livro) {
+        if (!livros.contains(livro)){
+            livros.add(livro);
+            livro.getAutores().add(this);
+        }
     }
 
     public Long getId() {
@@ -55,11 +62,11 @@ public class Autor {
         this.sexo = sexo;
     }
 
-    public LocalDate getAnoNasc() {
+    public Year getAnoNasc() {
         return anoNasc;
     }
 
-    public void setAnoNasc(LocalDate anoNasc) {
+    public void setAnoNasc(Year anoNasc) {
         this.anoNasc = anoNasc;
     }
 
