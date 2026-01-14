@@ -1,8 +1,11 @@
 package com.db.biblioteca.controller;
 
 import com.db.biblioteca.dto.LocatarioRequest;
+import com.db.biblioteca.model.Locatario;
 import com.db.biblioteca.service.LocatarioService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/locatarios")
@@ -15,17 +18,17 @@ public class LocatarioController {
 
     @PostMapping
     public void criarLocatario(@RequestBody LocatarioRequest request) {
-        locatarioService.criarLocatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf());
+        locatarioService.criarLocatario(request);
     }
 
     @PutMapping("/{id}")
     public void atualizarLocatario(@PathVariable Long id, @RequestBody LocatarioRequest request) {
-        locatarioService.atualizarLocatario(id, request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf());
+        locatarioService.atualizarLocatario(id, request);
     }
 
     @GetMapping
-    public void listarTodosLocatarios() {
-        locatarioService.listarTodosLocatarios();
+    public List<Locatario> listarTodosLocatarios() {
+        return locatarioService.listarTodosLocatarios();
     }
 
     @DeleteMapping("/{id}")
