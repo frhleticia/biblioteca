@@ -1,8 +1,6 @@
 package com.db.biblioteca.controller;
 
-import com.db.biblioteca.dto.AutorRequest;
 import com.db.biblioteca.dto.LivroRequest;
-import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.service.AutorService;
 import com.db.biblioteca.service.LivroService;
@@ -25,11 +23,6 @@ public class LivroController {
     @PostMapping
     public void criarLivro(@RequestBody LivroRequest request) {
         LivroService.criarLivro(request.nome(), request.isbn(), request.dataPublicacao());
-    }
-
-    @PostMapping("/{livroId}/autores/{autorId}")
-    public void atribuirUmLivroAUmAutor(@PathVariable Long livroId, @PathVariable Long autorId) {
-        livroService.vincularAutorAoLivro(autorId, livroId);
     }
 
     @PutMapping("/{id}")

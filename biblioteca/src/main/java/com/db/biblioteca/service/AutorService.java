@@ -52,6 +52,11 @@ public class AutorService {
 
     public void removerAutor(Long id) {
         Autor autor = buscarAutor(id);
+
+        if (!autor.getLivros().isEmpty()) {
+            throw new RuntimeException("Autor possui livros associados");
+        }
+
         autorRepository.remover(autor);
     }
 

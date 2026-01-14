@@ -25,6 +25,11 @@ public class AutorController {
         autorService.criarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf());
     }
 
+    @PostMapping("/{livroId}/autores/{autorId}")
+    public void atribuirLivro(@PathVariable Long livroId, @PathVariable Long autorId) {
+        livroService.vincularAutorAoLivro(autorId, livroId);
+    }
+
     @PutMapping("/{id}")
     public void atualizarAutor(@PathVariable Long id, @RequestBody AutorRequest request) {
         autorService.atualizarAutor(id, request.nome(), request.sexo(), request.anoNasc(), request.cpf());

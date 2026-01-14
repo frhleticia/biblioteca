@@ -44,6 +44,9 @@ public class LivroService {
 
         if (!livro.getAutores().contains(autor)) {
             livro.getAutores().add(autor);
+        }
+
+        if (!autor.getLivros().contains(livro)) {
             autor.getLivros().add(livro);
         }
     }
