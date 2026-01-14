@@ -30,13 +30,13 @@ public class AutorServiceTest {
 
     //Criar usuário
     @Test
-    void deveSalvarUsuarioQuandoTodosDadosValidos() {
+    void deveSalvarAutorQuandoTodosDadosValidos() {
 
         autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
 
-        Autor p = autorService.buscarAutor(1L);
+        Autor a = autorService.buscarAutor(1L);
 
-        assertNotNull(p);
+        assertNotNull(a);
     }
 
     //Atualizar pessoa
@@ -75,9 +75,9 @@ public class AutorServiceTest {
 
         autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
 
-        Autor p = autorService.buscarAutor(1L);
+        Autor a = autorService.buscarAutor(1L);
 
-        assertNotNull(p);
+        assertNotNull(a);
     }
 
     @Test
@@ -89,14 +89,14 @@ public class AutorServiceTest {
     @Test
     void deveRetornarListaDeLivrosQuandoPessoaExistente() {
 
-        Livro odisseia = livroService.criarLivro("Odisseia", "00998877665", LocalDate.of(2010, 10, 10));
-        Autor maria = autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        Livro livro = livroService.criarLivro("Odisseia", "00998877665", LocalDate.of(2010, 10, 10));
+        Autor autor = autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
 
-        livroService.vincularAutorAoLivro(maria.getId(), odisseia.getId());
+        livroService.vincularAutorAoLivro(autor.getId(), livro.getId());
 
-        List<Livro> listaDeLivros = livroService.listarLivrosPorAutor(maria.getId());
+        List<Livro> listaDeLivros = livroService.listarLivrosPorAutor(autor.getId());
 
-        assertTrue(listaDeLivros.contains(odisseia));
+        assertTrue(listaDeLivros.contains(livro));
     }
 
     //Remover pessoa

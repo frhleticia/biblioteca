@@ -48,7 +48,7 @@ public class LivroService {
         }
     }
 
-    public void atualizarLivro(Long id, String nome, String isbn, LocalDate dataPublicacao) {
+    public Livro atualizarLivro(Long id, String nome, String isbn, LocalDate dataPublicacao) {
         Livro livro = buscarLivro(id);
 
         validarLivro(nome, isbn, dataPublicacao, id);
@@ -56,15 +56,12 @@ public class LivroService {
         livro.setNome(nome);
         livro.setIsbn(isbn);
         livro.setDataPublicacao(dataPublicacao);
+
+        return livro;
     }
 
     public List<Livro> listarTodosLivros() {
         return livroRepository.getLivros();
-    }
-
-    public List<Autor> listarAutoresPorLivro(Long id) {
-        Livro livro = buscarLivro(id);
-        return livro.getAutores();
     }
 
     public List<Livro> listarLivrosPorAutor(Long autorId) {
