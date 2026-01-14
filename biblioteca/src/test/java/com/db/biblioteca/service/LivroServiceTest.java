@@ -37,19 +37,6 @@ public class LivroServiceTest {
     }
 
     @Test
-    void deveConterAutorQuandoVincularAutorAoLivro() {
-
-        Autor autor = autorService.criarAutor("Maria", "F", Year.of(2005), "12345678901");
-        Livro livro = livroService.criarLivro("Odisseia", "12345678901", LocalDate.of(1996, 1, 14));
-
-        livroService.vincularAutorAoLivro(autor.getId(), livro.getId());
-
-        List<Livro> listaLivrosDaMaria = livroService.listarLivrosPorAutor(autor.getId());
-
-        assertTrue(listaLivrosDaMaria.contains(livro));
-    }
-
-    @Test
     void deveAtualizarLivroQuandoTodosDadosValidos() {
 
         Livro livro = livroService.criarLivro("Odisseia", "12345678901", LocalDate.of(1996, 1, 14));

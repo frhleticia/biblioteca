@@ -1,5 +1,6 @@
 package com.db.biblioteca.service;
 
+import com.db.biblioteca.dto.AutorRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.AutorRepository;
@@ -24,21 +25,26 @@ public class AutorService {
         return autor;
     }
 
-    public Autor criarAutor(String nome, String sexo, Year anoNasc, String cpf) {
-        validarAutor(nome, sexo, anoNasc, cpf, -1L);
-        Autor autor = new Autor(nome, sexo, anoNasc, cpf);
+    public Autor criarAutor(AutorRequest request) {
+        validarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf(), -1L);
+
+        Autor autor = new Autor(request.nome(), request.sexo(), request.anoNasc(), request.cpf());
         autor.setId(proximoId++);
         autorRepository.salvar(autor);
+
         return autor;
     }
 
-    public void atualizarAutor(Long id, String nome, String sexo, Year anoNasc, String cpf) {
+    public Autor atualizarAutor(Long id, AutorRequest request) {
         Autor autor = buscarAutor(id);
-        validarAutor(nome, sexo, anoNasc, cpf, id);
-        autor.setNome(nome);
-        autor.setSexo(sexo);
-        autor.setAnoNasc(anoNasc);
-        autor.setCpf(cpf);
+
+        validarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf(), id);
+        autor.setNome(request.nome());
+        autor.setSexo(request.sexo());
+        autor.setAnoNasc(request.anoNasc());
+        autor.setCpf(request.cpf());
+
+        return autor;
     }
 
     public List<Autor> listarTodosAutores() {

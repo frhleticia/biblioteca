@@ -9,6 +9,7 @@ public class Livro {
     private String isbn;
     private LocalDate dataPublicacao;
     private List<Autor> autores;
+    private boolean alugado;
 
     public Livro(String nome, String isbn, LocalDate dataPublicacao, List<Autor> autores) {
         this.nome = nome;

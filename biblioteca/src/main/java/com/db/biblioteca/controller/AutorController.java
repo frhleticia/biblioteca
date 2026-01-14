@@ -25,7 +25,7 @@ public class AutorController {
         autorService.criarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf());
     }
 
-    @PostMapping("/{livroId}/autores/{autorId}")
+    @PostMapping("/{autorId}/livros/{livroId}")
     public void atribuirLivro(@PathVariable Long livroId, @PathVariable Long autorId) {
         livroService.vincularAutorAoLivro(autorId, livroId);
     }

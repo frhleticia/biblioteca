@@ -1,5 +1,7 @@
 package com.db.biblioteca.service;
 
+import com.db.biblioteca.dto.AutorRequest;
+import com.db.biblioteca.dto.LivroRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.AutorRepository;
@@ -12,10 +14,9 @@ import java.time.Year;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AutorServiceTest {
+
     private AutorService autorService;
     private LivroService livroService;
 
@@ -28,52 +29,97 @@ public class AutorServiceTest {
         livroService = new LivroService(livroRepository, autorService);
     }
 
-    //Criar usuário
+    // Criar autor
     @Test
     void deveSalvarAutorQuandoTodosDadosValidos() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        AutorRequest request = new AutorRequest(
+                "Maria", "NB", Year.of(2005), "12345678901"
+        );
+
+        autorService.criarAutor(request);
 
         Autor a = autorService.buscarAutor(1L);
 
         assertNotNull(a);
     }
 
-    //Atualizar pessoa
+    // Atualizar autor
     @Test
     void deveLancarExcecaoQuandoCpfRepetidoQuandoAtualizarAutor() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "11188833399");
+        autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "11188833399")
+        );
 
-        autorService.criarAutor("Joana", "M", Year.of(2005), "12345678901");
+        autorService.criarAutor(
+                new AutorRequest("Joana", "M", Year.of(2005), "12345678901")
+        );
 
-        assertThrows(RuntimeException.class, () -> autorService.atualizarAutor(1L, "Maria", "NB", Year.of(2005), "12345678901"));
+        AutorRequest requestAtualizacao = new AutorRequest(
+                "Maria", "NB", Year.of(2005), "12345678901"
+        );
+
+        assertThrows(RuntimeException.class,
+                () -> autorService.atualizarAutor(1L, requestAtualizacao));
     }
 
     @Test
     void deveAtualizarAutorQuandoTodosDadosValidos() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901")
+        );
 
-        autorService.criarAutor("Joana", "M", Year.of(2002), "11122233344");
+        autorService.criarAutor(
+                new AutorRequest("Joana", "M", Year.of(2002), "11122233344")
+        );
 
-        autorService.atualizarAutor(1L, "Maria", "NB", Year.of(2005), "10987654321");
+        AutorRequest requestAtualizacao = new AutorRequest(
+                "Maria", "NB", Year.of(2005), "10987654321"
+        );
+
+        autorService.atualizarAutor(1L, requestAtualizacao);
+
         Autor atualizado = autorService.buscarAutor(1L);
 
         assertEquals("10987654321", atualizado.getCpf());
     }
 
-    //Buscar pessoa por id
+    @Test
+    void deveConterAutorQuandoVincularAutorAoLivro() {
+        AutorRequest autorRequest = new AutorRequest(
+                "Maria", "F", Year.of(2005), "12345678901"
+        );
+
+        LivroRequest livroRequest = new LivroRequest(
+                "Odisseia", "12345678901", LocalDate.of(1996, 1, 14)
+        );
+
+        Autor autor = autorService.criarAutor(autorRequest);
+        Livro livro = livroService.criarLivro(livroRequest);
+
+        livroService.vincularAutorAoLivro(autor.getId(), livro.getId());
+
+        List<Livro> listaLivrosDaMaria =
+                autorService.listarLivrosPorAutor(autor.getId());
+
+        assertTrue(listaLivrosDaMaria.contains(livro));
+    }
+
+    // Buscar autor
     @Test
     void deveRetornarNuloQuandoAutorInexistente() {
-
-        assertThrows(RuntimeException.class, () -> autorService.buscarAutor(999L));
+        assertThrows(RuntimeException.class,
+                () -> autorService.buscarAutor(999L));
     }
 
     @Test
     void deveRetornarAutorQuandoExistente() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901")
+        );
 
         Autor a = autorService.buscarAutor(1L);
 
@@ -82,94 +128,116 @@ public class AutorServiceTest {
 
     @Test
     void deveLancarExcecaoQuandoListarLivrosDeAutorInexistente() {
-
-        assertThrows(RuntimeException.class, () -> autorService.listarLivrosPorAutor(999L));
+        assertThrows(RuntimeException.class,
+                () -> autorService.listarLivrosPorAutor(999L));
     }
 
     @Test
     void deveRetornarListaDeLivrosQuandoPessoaExistente() {
 
-        Livro livro = livroService.criarLivro("Odisseia", "00998877665", LocalDate.of(2010, 10, 10));
-        Autor autor = autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        Livro livro = livroService.criarLivro(
+                new LivroRequest("Odisseia", "00998877665",
+                        LocalDate.of(2010, 10, 10))
+        );
+
+        Autor autor = autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901")
+        );
 
         livroService.vincularAutorAoLivro(autor.getId(), livro.getId());
 
-        List<Livro> listaDeLivros = livroService.listarLivrosPorAutor(autor.getId());
+        List<Livro> listaDeLivros =
+                autorService.listarLivrosPorAutor(autor.getId());
 
         assertTrue(listaDeLivros.contains(livro));
     }
 
-    //Remover pessoa
+    // Remover autor
     @Test
     void deveLancarExcecaoQuandoRemoverAutorInexistente() {
-
-        assertThrows(RuntimeException.class, () -> autorService.removerAutor(999L));
+        assertThrows(RuntimeException.class,
+                () -> autorService.removerAutor(999L));
     }
 
     @Test
     void deveRemoverAutorQuandoAutorExistenteForRemovida() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901")
+        );
 
         autorService.removerAutor(1L);
 
-        assertThrows(RuntimeException.class, () -> autorService.buscarAutor(1L));
+        assertThrows(RuntimeException.class,
+                () -> autorService.buscarAutor(1L));
     }
 
     @Test
     void deveLancarExcecaoQuandoTentaRemoverComAListaVazia() {
-
-        assertThrows(RuntimeException.class, () -> autorService.removerAutor(1L));
+        assertThrows(RuntimeException.class,
+                () -> autorService.removerAutor(1L));
     }
 
-    //Exceções
+    // Exceções
     @Test
     void deveLancarExcecaoQuandoNomeNulo() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor(null, "NB", Year.of(2005), "12345678901"));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest(null, "NB", Year.of(2005), "12345678901")));
     }
 
     @Test
     void deveLancarExcecaoQuandoNomeBlank() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("", "NB", Year.of(2005), "12345678901"));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("", "NB", Year.of(2005), "12345678901")));
     }
 
     @Test
     void deveLancarExcecaoQuandoSexoInvalido() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("Maria", "Feminino", Year.of(2005), "12345678901"));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("Maria", "Feminino",
+                                Year.of(2005), "12345678901")));
     }
 
     @Test
     void deveLancarExcecaoQuandoDataNascNulo() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("Maria", "NB", null, "12345678901"));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("Maria", "NB", null, "12345678901")));
     }
 
     @Test
     void deveLancarExcecaoQuandoCpfNulo() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("Maria", "NB", Year.of(2005), null));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("Maria", "NB", Year.of(2005), null)));
     }
 
     @Test
     void deveLancarExcecaoQuandoCpfBlank() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("Maria", "NB", Year.of(2005), " "));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("Maria", "NB", Year.of(2005), " ")));
     }
 
     @Test
     void deveLancarExcecaoQuandoCpfRepetido() {
 
-        autorService.criarAutor("Maria", "NB", Year.of(2005), "12345678901");
+        autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901")
+        );
 
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("Joana", "F", Year.of(2005), "12345678901"));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("Joana", "F", Year.of(2005), "12345678901")));
     }
 
     @Test
     void deveLancarExcecaoQuandoCpfTamanhoInvalido() {
-
-        assertThrows(RuntimeException.class, () -> autorService.criarAutor("Maria", "NB", Year.of(2005), "12345"));
+        assertThrows(RuntimeException.class,
+                () -> autorService.criarAutor(
+                        new AutorRequest("Maria", "NB", Year.of(2005), "12345")));
     }
 }

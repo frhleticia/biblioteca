@@ -1,8 +1,10 @@
 package com.db.biblioteca.service;
 
+import com.db.biblioteca.dto.LivroRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.LivroRepository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,12 +31,24 @@ public class LivroService {
         return livro;
     }
 
-    public Livro criarLivro(String nome, String isbn, LocalDate dataPublicacao) {
-        validarLivro(nome, isbn, dataPublicacao, -1L);
+    public Livro criarLivro(LivroRequest request) {
+        validarLivro(request.nome(), request.isbn(), request.dataPublicacao(), -1L);
 
-        Livro livro = new Livro(nome, isbn, dataPublicacao, new ArrayList<>());
+        Livro livro = new Livro(request.nome(), request.isbn(), request.dataPublicacao(), new ArrayList<>());
         livro.setId(proximoId++);
         livroRepository.salvar(livro);
+        return livro;
+    }
+
+    public Livro atualizarLivro(Long id, LivroRequest request) {
+        Livro livro = buscarLivro(id);
+
+        validarLivro(request.nome(), request.isbn(), request.dataPublicacao(), id);
+
+        livro.setNome(request.nome());
+        livro.setIsbn(request.isbn());
+        livro.setDataPublicacao(request.dataPublicacao());
+
         return livro;
     }
 
@@ -51,37 +65,8 @@ public class LivroService {
         }
     }
 
-    public Livro atualizarLivro(Long id, String nome, String isbn, LocalDate dataPublicacao) {
-        Livro livro = buscarLivro(id);
-
-        validarLivro(nome, isbn, dataPublicacao, id);
-
-        livro.setNome(nome);
-        livro.setIsbn(isbn);
-        livro.setDataPublicacao(dataPublicacao);
-
-        return livro;
-    }
-
     public List<Livro> listarTodosLivros() {
         return livroRepository.getLivros();
-    }
-
-    public List<Livro> listarLivrosPorAutor(Long autorId) {
-        autorService.buscarAutor(autorId);
-
-        List<Livro> listaDeResposta = new ArrayList<>();
-
-        for (Livro livro : livroRepository.getLivros()) {
-            for (Autor autor : livro.getAutores()) {
-                if (autor.getId().equals(autorId)) {
-                    listaDeResposta.add(livro);
-                    break;
-                }
-            }
-        }
-
-        return listaDeResposta;
     }
 
     public void removerLivro(Long id) {

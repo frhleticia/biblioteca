@@ -22,12 +22,12 @@ public class LivroController {
 
     @PostMapping
     public void criarLivro(@RequestBody LivroRequest request) {
-        LivroService.criarLivro(request.nome(), request.isbn(), request.dataPublicacao());
+        LivroService.criarLivro(request);
     }
 
     @PutMapping("/{id}")
     public void atualizarLivro(@PathVariable Long id, @RequestBody LivroRequest request) {
-        LivroService.atualizarLivro(id, request.nome(), request.isbn(), request.dataPublicacao());
+        LivroService.atualizarLivro(id, request);
     }
 
     @GetMapping
