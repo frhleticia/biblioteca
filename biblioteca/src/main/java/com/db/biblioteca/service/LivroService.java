@@ -4,7 +4,6 @@ import com.db.biblioteca.dto.LivroRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.LivroRepository;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

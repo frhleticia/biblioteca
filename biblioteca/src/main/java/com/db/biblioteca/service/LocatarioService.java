@@ -1,9 +1,11 @@
 package com.db.biblioteca.service;
 
+import com.db.biblioteca.dto.LocatarioRequest;
 import com.db.biblioteca.model.Locatario;
 import com.db.biblioteca.repository.LocatarioRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class LocatarioService {
@@ -23,29 +25,29 @@ public class LocatarioService {
         throw new RuntimeException("Locatário não encontrado");
     }
 
-    public void criarLocatario(String nome, String sexo, String telefone, String email, LocalDate dataNasc, String cpf) {
-        validarLocatario(nome, sexo, telefone, email, dataNasc, cpf, -1L);
+    public void criarLocatario(LocatarioRequest request) {
+        validarLocatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf(), -1L);
 
-        Locatario loc = new Locatario(nome, sexo, telefone, email, dataNasc, cpf);
+        Locatario loc = new Locatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf());
         loc.setId(proximoId++);
         locatarioRepository.salvar(loc);
     }
 
-    public void atualizarLocatario(Long locId, String nome, String sexo, String telefone, String email, LocalDate dataNasc, String cpf) {
+    public void atualizarLocatario(Long locId, LocatarioRequest request) {
         Locatario loc = buscarLocatario(locId);
 
-        validarLocatario(nome, sexo, telefone, email, dataNasc, cpf, locId);
+        validarLocatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf(), locId);
 
-        loc.setNome(nome);
-        loc.setSexo(sexo);
-        loc.setTelefone(telefone);
-        loc.setEmail(email);
-        loc.setDataNasc(dataNasc);
-        loc.setCpf(cpf);
+        loc.setNome(request.nome());
+        loc.setSexo(request.sexo());
+        loc.setTelefone(request.telefone());
+        loc.setEmail(request.email());
+        loc.setDataNasc(request.dataNasc());
+        loc.setCpf(request.cpf());
     }
 
-    public void listarTodosLocatarios() {
-        locatarioRepository.getLocatarios().toString();
+    public List<Locatario> listarTodosLocatarios() {
+        return locatarioRepository.getLocatarios();
     }
 
     public void removerLocatario(Long locId) {

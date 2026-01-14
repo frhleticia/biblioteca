@@ -25,10 +25,8 @@ public class LivroServiceTest {
 
     @Test
     void deveRetornarLivroQuandoExistente() {
-
-        LivroRequest request = new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14));
-
-        Livro livro = livroService.criarLivro(request);
+        Livro livro = livroService.criarLivro(
+                new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
 
         livroService.buscarLivro(livro.getId());
 
@@ -37,11 +35,11 @@ public class LivroServiceTest {
 
     @Test
     void deveAtualizarLivroQuandoTodosDadosValidos() {
-        LivroRequest request = new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14));
-        Livro livro = livroService.criarLivro(request);
+        Livro livro = livroService.criarLivro(
+                new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
 
-        LivroRequest requestAtt = new LivroRequest("A Odisseia", "12345678901", LocalDate.of(1996, 1, 14));
-        Livro atualizacao = livroService.atualizarLivro(livro.getId(), requestAtt);
+        Livro atualizacao = livroService.atualizarLivro(livro.getId(),
+                new LivroRequest("A Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
 
         livroService.buscarLivro(atualizacao.getId());
 
