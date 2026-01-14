@@ -22,7 +22,7 @@ public class AutorController {
 
     @PostMapping
     public void criarAutor(@RequestBody AutorRequest request) {
-        autorService.criarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf());
+        autorService.criarAutor(request);
     }
 
     @PostMapping("/{autorId}/livros/{livroId}")
@@ -32,7 +32,7 @@ public class AutorController {
 
     @PutMapping("/{id}")
     public void atualizarAutor(@PathVariable Long id, @RequestBody AutorRequest request) {
-        autorService.atualizarAutor(id, request.nome(), request.sexo(), request.anoNasc(), request.cpf());
+        autorService.atualizarAutor(id, request);
     }
 
     @GetMapping
