@@ -53,10 +53,6 @@ public class Livro {
         this.isbn = isbn;
     }
 
-    public LocalDate getDataPublicacao() {
-        return dataPublicacao;
-    }
-
     public void setDataPublicacao(LocalDate dataPublicacao) {
         this.dataPublicacao = dataPublicacao;
     }
