@@ -36,4 +36,5 @@ public class AluguelController {
     public void removerAluguel(@PathVariable Long id) {
         aluguelService.removerAluguel(id);
     }
+
 }

@@ -35,4 +35,5 @@ public class LocatarioController {
     public void removerLocatario(@PathVariable Long id) {
         locatarioService.removerLocatario(id);
     }
+
 }

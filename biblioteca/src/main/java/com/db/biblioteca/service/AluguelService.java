@@ -90,4 +90,5 @@ public class AluguelService {
 
         return livrosAlugadosPorLocatario;
     }
+
 }

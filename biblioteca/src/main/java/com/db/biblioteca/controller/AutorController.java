@@ -49,4 +49,5 @@ public class AutorController {
     public void removerAutor(@PathVariable Long id) {
         autorService.removerAutor(id);
     }
+
 }
