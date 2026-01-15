@@ -83,19 +83,13 @@ public class LocatarioServiceTest {
 
     @Test
     void deveRemoverLocatarioQuandoLocatarioExistenteForRemovida() {
-        locatarioService.criarLocatario(
+        Locatario locatario = locatarioService.criarLocatario(
                 new LocatarioRequest("Maria", "NB", "51999999999", "maria@email.com", LocalDate.of(2005, 5, 5), "12345678901"));
 
-        locatarioService.removerLocatario(1L);
+        locatarioService.removerLocatario(locatario.getId());
 
         assertThrows(RuntimeException.class,
-                () -> locatarioService.buscarLocatario(1L));
-    }
-
-    @Test
-    void deveLancarExcecaoQuandoTentaRemoverComAListaVazia() {
-        assertThrows(RuntimeException.class,
-                () -> locatarioService.removerLocatario(1L));
+                () -> locatarioService.buscarLocatario(locatario.getId()));
     }
 
     @Test

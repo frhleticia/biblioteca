@@ -25,15 +25,17 @@ public class LocatarioService {
         throw new RuntimeException("Locatário não encontrado");
     }
 
-    public void criarLocatario(LocatarioRequest request) {
+    public Locatario criarLocatario(LocatarioRequest request) {
         validarLocatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf(), -1L);
 
         Locatario loc = new Locatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf());
         loc.setId(proximoId++);
         locatarioRepository.salvar(loc);
+
+        return loc;
     }
 
-    public void atualizarLocatario(Long locId, LocatarioRequest request) {
+    public Locatario atualizarLocatario(Long locId, LocatarioRequest request) {
         Locatario loc = buscarLocatario(locId);
 
         validarLocatario(request.nome(), request.sexo(), request.telefone(), request.email(), request.dataNasc(), request.cpf(), locId);
@@ -44,6 +46,8 @@ public class LocatarioService {
         loc.setEmail(request.email());
         loc.setDataNasc(request.dataNasc());
         loc.setCpf(request.cpf());
+
+        return loc;
     }
 
     public List<Locatario> listarTodosLocatarios() {

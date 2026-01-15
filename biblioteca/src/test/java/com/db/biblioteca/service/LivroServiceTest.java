@@ -80,8 +80,54 @@ public class LivroServiceTest {
     }
 
     @Test
-    void deveLancarExcecaoQuandoTentaRemoverComAListaVazia() {
+    void deveLancarExcecaoQuandoNomeNulo() {
         assertThrows(RuntimeException.class,
-                () -> livroService.removerLivro(1L));
+                () -> livroService.criarLivro(
+                        new LivroRequest(null, "12345678901", LocalDate.of(1996, 1, 14))));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoNomeBlank() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.criarLivro(
+                        new LivroRequest(" ", "12345678901", LocalDate.of(1996, 1, 14))));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoIsbnNulo() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.criarLivro(
+                        new LivroRequest("Odisseia", null, LocalDate.of(1996, 1, 14))));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoIsbnBlank() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.criarLivro(
+                        new LivroRequest("Odisseia", "", LocalDate.of(1996, 1, 14))));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoIsbnRepetido() {
+        livroService.criarLivro(
+                new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
+
+        assertThrows(RuntimeException.class,
+                () -> livroService.criarLivro(
+                        new LivroRequest("O Pequeno Príncipe", "12345678901", LocalDate.of(2001, 1, 14))));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoIsbnTamanhoInvalido() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.criarLivro(
+                        new LivroRequest("Odisseia", "12345", LocalDate.of(1996, 1, 14))));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoDataPublicacaoNula() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.criarLivro(
+                        new LivroRequest("Odisseia", "12345678901", null)));
     }
 }

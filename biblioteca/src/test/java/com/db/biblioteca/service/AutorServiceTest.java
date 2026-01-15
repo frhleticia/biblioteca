@@ -144,7 +144,7 @@ public class AutorServiceTest {
     }
 
     @Test
-    void deveLancarExcecaoQuandoRemoverAutorComListaNaoVazia() {
+    void deveLancarExcecaoQuandoRemoverAutorComLivrosVinculados() {
         Autor autor = autorService.criarAutor(
                 new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
 
