@@ -11,7 +11,7 @@ public class LivroRepository {
 
     public Livro buscarPorId(Long id) {
         for (Livro livro : livros) {
-            if (Objects.equals(livro.getId(), id)) {
+            if (livro.getId().equals(id)) {
                 return livro;
             }
         }

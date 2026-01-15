@@ -124,7 +124,7 @@ public class LivroServiceTest {
         Livro livro2 = livroService.criarLivro(
                 new LivroRequest("O Pequeno Príncipe", "12345678901", LocalDate.of(2001, 10, 10)));
 
-        List<Livro> listaDeLivros = livroService.listarTodosLivros();
+        List<Livro> listaDeLivros = livroService.listarLivrosDisponiveis();
 
         assertTrue(listaDeLivros.contains(livro1) && listaDeLivros.contains(livro2));
     }
