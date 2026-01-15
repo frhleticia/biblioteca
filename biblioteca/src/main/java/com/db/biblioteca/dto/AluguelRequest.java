@@ -1,6 +1,9 @@
 package com.db.biblioteca.dto;
 
-import java.time.LocalDate;
+import com.db.biblioteca.model.Locatario;
 
-public record AluguelRequest(LocalDate dataRetirada, LocalDate dataDevolucao) {
+import java.time.LocalDate;
+import java.util.List;
+
+public record AluguelRequest(List<Long> livroIds, Long locatarioId) {
 }

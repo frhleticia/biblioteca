@@ -1,10 +1,12 @@
 package com.db.biblioteca.repository;
 
 import com.db.biblioteca.model.Locatario;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class LocatarioRepository {
     private List<Locatario> locatarios = new ArrayList<>();
 

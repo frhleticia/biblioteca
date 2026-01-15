@@ -3,11 +3,13 @@ package com.db.biblioteca.service;
 import com.db.biblioteca.dto.LocatarioRequest;
 import com.db.biblioteca.model.Locatario;
 import com.db.biblioteca.repository.LocatarioRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class LocatarioService {
     private final LocatarioRepository locatarioRepository;
     private Long proximoId = 1L;

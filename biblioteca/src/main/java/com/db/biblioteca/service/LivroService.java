@@ -4,12 +4,14 @@ import com.db.biblioteca.dto.LivroRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.LivroRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class LivroService {
     private final LivroRepository livroRepository;
     private final AutorService autorService;
@@ -36,6 +38,7 @@ public class LivroService {
         Livro livro = new Livro(request.nome(), request.isbn(), request.dataPublicacao(), new ArrayList<>());
         livro.setId(proximoId++);
         livroRepository.salvar(livro);
+
         return livro;
     }
 

@@ -4,11 +4,13 @@ import com.db.biblioteca.dto.AutorRequest;
 import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.AutorRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.Year;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class AutorService {
     private final AutorRepository autorRepository;
     private Long proximoId = 1L;

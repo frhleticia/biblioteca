@@ -1,10 +1,12 @@
 package com.db.biblioteca.repository;
 
 import com.db.biblioteca.model.Aluguel;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class AluguelRepository {
     private List<Aluguel> alugueis = new ArrayList<>();
 
