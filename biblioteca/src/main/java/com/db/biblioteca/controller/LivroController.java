@@ -12,7 +12,6 @@ import java.util.List;
 public class LivroController {
     private final LivroService livroService;
 
-
     public LivroController(LivroService livroService) {
         this.livroService = livroService;
     }
