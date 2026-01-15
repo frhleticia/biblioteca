@@ -1,6 +1,8 @@
 package com.db.biblioteca.service;
 
+import com.db.biblioteca.dto.AutorRequest;
 import com.db.biblioteca.dto.LivroRequest;
+import com.db.biblioteca.model.Autor;
 import com.db.biblioteca.model.Livro;
 import com.db.biblioteca.repository.AutorRepository;
 import com.db.biblioteca.repository.LivroRepository;
@@ -8,18 +10,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.Year;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LivroServiceTest {
     private LivroService livroService;
+    private AutorService autorService;
 
     @BeforeEach
     void setup() {
         AutorRepository autorRepository = new AutorRepository();
         LivroRepository livroRepository = new LivroRepository();
 
-        AutorService autorService = new AutorService(autorRepository);
+        autorService = new AutorService(autorRepository);
         livroService = new LivroService(livroRepository, autorService);
     }
 
@@ -61,6 +66,69 @@ public class LivroServiceTest {
 
         assertNotNull(livro);
     }
+
+    @Test
+    void deveVincularAutorELivroQuandoAutorELivroExistentes() {
+        Livro livro = livroService.criarLivro(
+                new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
+
+        Autor autor = autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
+
+        livroService.vincularAutorAoLivro(autor.getId(), livro.getId());
+
+        List<Livro> listaDeLivros =
+                autorService.listarLivrosPorAutor(autor.getId());
+
+        assertTrue(listaDeLivros.contains(livro));
+    }
+
+    @Test
+    void deveEvitarDuplicacaoQuandoAutorJaContemAqueleLivroVinculado() {
+        Autor autor = autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
+
+        Livro livro1 = livroService.criarLivro(
+                new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
+        Livro livro2 = livroService.criarLivro(
+                new LivroRequest("O Pequeno Príncipe", "77665533881", LocalDate.of(2011, 10, 10)));
+
+        livroService.vincularAutorAoLivro(autor.getId(), livro1.getId());
+        livroService.vincularAutorAoLivro(autor.getId(), livro2.getId());
+        livroService.vincularAutorAoLivro(autor.getId(), livro1.getId());
+
+        List<Livro> listaDeLivros =
+                autorService.listarLivrosPorAutor(autor.getId());
+
+        assertEquals(2, listaDeLivros.size());
+    }
+
+    @Test
+    void deveRetornarListaDeLivrosQuandoListarTodosLivros() {
+        Livro livro1 = livroService.criarLivro(
+                new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
+
+        Livro livro2 = livroService.criarLivro(
+                new LivroRequest("O Pequeno Príncipe", "12345678901", LocalDate.of(2001, 10, 10)));
+
+        List<Livro> listaDeLivros = livroService.listarTodosLivros();
+
+        assertTrue(listaDeLivros.contains(livro1) && listaDeLivros.contains(livro2));
+    }
+
+    @Test
+    void deveRetornarListaDeLivrosDisponiveisQuandoListarLivrosDisponiveis() {
+        Livro livro1 = livroService.criarLivro(
+                new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
+
+        Livro livro2 = livroService.criarLivro(
+                new LivroRequest("O Pequeno Príncipe", "12345678901", LocalDate.of(2001, 10, 10)));
+
+        List<Livro> listaDeLivros = livroService.listarTodosLivros();
+
+        assertTrue(listaDeLivros.contains(livro1) && listaDeLivros.contains(livro2));
+    }
+
 
     @Test
     void deveLancarExcecaoQuandoRemoverLivroInexistente() {
