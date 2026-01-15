@@ -31,10 +31,10 @@ public class AutorServiceTest {
 
     @Test
     void deveSalvarAutorQuandoTodosDadosValidos() {
-        autorService.criarAutor(
+        Autor a = autorService.criarAutor(
                 new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
 
-        Autor a = autorService.buscarAutor(1L);
+        autorService.buscarAutor(a.getId());
 
         assertNotNull(a);
     }
@@ -111,10 +111,9 @@ public class AutorServiceTest {
     }
 
     @Test
-    void deveRetornarListaDeLivrosQuandoPessoaExistente() {
+    void deveRetornarListaDeLivrosQuandoAutorExistente() {
         Livro livro = livroService.criarLivro(
-                new LivroRequest("Odisseia", "00998877665",
-                        LocalDate.of(2010, 10, 10)));
+                new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
 
         Autor autor = autorService.criarAutor(
                 new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
@@ -134,20 +133,23 @@ public class AutorServiceTest {
     }
 
     @Test
-    void deveRemoverAutorQuandoAutorExistenteForRemovida() {
-        autorService.criarAutor(
+    void deveRemoverAutorQuandoAutorExistenteForRemovido() {
+        Autor autor = autorService.criarAutor(
                 new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
 
-        autorService.removerAutor(1L);
+        autorService.removerAutor(autor.getId());
 
         assertThrows(RuntimeException.class,
-                () -> autorService.buscarAutor(1L));
+                () -> autorService.buscarAutor(autor.getId()));
     }
 
     @Test
-    void deveLancarExcecaoQuandoTentaRemoverComAListaVazia() {
+    void deveLancarExcecaoQuandoRemoverAutorComListaNaoVazia() {
+        Autor autor = autorService.criarAutor(
+                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
+
         assertThrows(RuntimeException.class,
-                () -> autorService.removerAutor(1L));
+                () -> autorService.removerAutor(autor.getId()));
     }
 
     @Test

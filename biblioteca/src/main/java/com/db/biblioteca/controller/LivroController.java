@@ -27,6 +27,11 @@ public class LivroController {
         livroService.atualizarLivro(id, request);
     }
 
+    @GetMapping("/disponiveis")
+    public List<Livro> listarLivrosDisponiveis() {
+        return livroService.listarLivrosDisponiveis();
+    }
+
     @GetMapping
     public List<Livro> listarTodosLivros() {
         return livroService.listarTodosLivros();

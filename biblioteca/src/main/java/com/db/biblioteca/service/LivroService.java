@@ -64,6 +64,18 @@ public class LivroService {
         }
     }
 
+    public List<Livro> listarLivrosDisponiveis() {
+        List<Livro> livrosDisponiveis = new ArrayList<>();
+
+        for (Livro livro : livroRepository.getLivros()){
+            if (!livro.isAlugado()) {
+                livrosDisponiveis.add(livro);
+            }
+        }
+
+        return livrosDisponiveis;
+    }
+
     public List<Livro> listarTodosLivros() {
         return livroRepository.getLivros();
     }

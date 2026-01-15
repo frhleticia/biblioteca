@@ -24,7 +24,7 @@ public class LivroServiceTest {
     }
 
     @Test
-    void deveRetornarLivroQuandoExistente() {
+    void deveSalvarLivroQuandoDadosValidos() {
         Livro livro = livroService.criarLivro(
                 new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
 
@@ -44,5 +44,44 @@ public class LivroServiceTest {
         livroService.buscarLivro(atualizacao.getId());
 
         assertEquals("A Odisseia", atualizacao.getNome());
+    }
+
+    @Test
+    void deveRetornarNuloQuandoLivroInexistente() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.buscarLivro(999L));
+    }
+
+    @Test
+    void deveRetornarLivroQuandoExistente() {
+        Livro livro = livroService.criarLivro(
+                new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
+
+        livroService.buscarLivro(livro.getId());
+
+        assertNotNull(livro);
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoRemoverLivroInexistente() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.removerLivro(999L));
+    }
+
+    @Test
+    void deveRemoverLivroQuandoLivroExistenteForRemovido() {
+        Livro livro = livroService.criarLivro(
+                new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
+
+        livroService.removerLivro(livro.getId());
+
+        assertThrows(RuntimeException.class,
+                () -> livroService.buscarLivro(livro.getId()));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoTentaRemoverComAListaVazia() {
+        assertThrows(RuntimeException.class,
+                () -> livroService.removerLivro(1L));
     }
 }

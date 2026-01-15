@@ -65,5 +65,11 @@ public class Livro {
         return autores;
     }
 
+    public boolean isAlugado() {
+        return alugado;
+    }
 
+    public void setAlugado(boolean alugado) {
+        this.alugado = alugado;
+    }
 }
