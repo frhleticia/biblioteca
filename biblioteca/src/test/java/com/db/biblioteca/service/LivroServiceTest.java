@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.Year;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,8 +31,6 @@ public class LivroServiceTest {
     void deveSalvarLivroQuandoDadosValidos() {
         Livro livro = livroService.criarLivro(
                 new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
-
-        livroService.buscarLivro(livro.getId());
 
         assertNotNull(livro);
     }
@@ -62,9 +59,9 @@ public class LivroServiceTest {
         Livro livro = livroService.criarLivro(
                 new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
 
-        livroService.buscarLivro(livro.getId());
+        Livro livroBuscado = livroService.buscarLivro(livro.getId());
 
-        assertNotNull(livro);
+        assertNotNull(livroBuscado);
     }
 
     @Test
@@ -73,7 +70,7 @@ public class LivroServiceTest {
                 new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
 
         Autor autor = autorService.criarAutor(
-                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
+                new AutorRequest("Maria", "NB", 2005, "12345678901"));
 
         livroService.vincularAutorAoLivro(autor.getId(), livro.getId());
 
@@ -86,7 +83,7 @@ public class LivroServiceTest {
     @Test
     void deveEvitarDuplicacaoQuandoAutorJaContemAqueleLivroVinculado() {
         Autor autor = autorService.criarAutor(
-                new AutorRequest("Maria", "NB", Year.of(2005), "12345678901"));
+                new AutorRequest("Maria", "NB", 2005, "12345678901"));
 
         Livro livro1 = livroService.criarLivro(
                 new LivroRequest("Odisseia", "00998877665", LocalDate.of(2010, 10, 10)));
@@ -137,7 +134,7 @@ public class LivroServiceTest {
     }
 
     @Test
-    void deveRemoverLivroQuandoLivroExistenteForRemovido() {
+    void deveRemoverLivroQuandoRemoverLivroExistente() {
         Livro livro = livroService.criarLivro(
                 new LivroRequest("Odisseia", "12345678901", LocalDate.of(1996, 1, 14)));
 

@@ -28,9 +28,9 @@ public class AutorService {
     }
 
     public Autor criarAutor(AutorRequest request) {
-        validarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf(), -1L);
+        validarAutor(request.nome(), request.sexo(), Year.of(request.anoNasc()), request.cpf(), -1L);
 
-        Autor autor = new Autor(request.nome(), request.sexo(), request.anoNasc(), request.cpf());
+        Autor autor = new Autor(request.nome(), request.sexo(), Year.of(request.anoNasc()), request.cpf());
         autor.setId(proximoId++);
         autorRepository.salvar(autor);
 
@@ -40,10 +40,10 @@ public class AutorService {
     public Autor atualizarAutor(Long id, AutorRequest request) {
         Autor autor = buscarAutor(id);
 
-        validarAutor(request.nome(), request.sexo(), request.anoNasc(), request.cpf(), id);
+        validarAutor(request.nome(), request.sexo(), Year.of(request.anoNasc()), request.cpf(), id);
         autor.setNome(request.nome());
         autor.setSexo(request.sexo());
-        autor.setAnoNasc(request.anoNasc());
+        autor.setAnoNasc(Year.of(request.anoNasc()));
         autor.setCpf(request.cpf());
 
         return autor;

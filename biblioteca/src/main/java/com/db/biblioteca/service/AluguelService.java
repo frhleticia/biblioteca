@@ -56,21 +56,15 @@ public class AluguelService {
         LocalDate retirada = LocalDate.now();
         LocalDate devolucao = retirada.plusDays(2);
 
-        Aluguel aluguel = new Aluguel(retirada, devolucao, livros, locatario);
+        Aluguel aluguel = new Aluguel(retirada, devolucao);
+
+        aluguel.setLivros(livros);
+        aluguel.setLocatario(locatario);
         aluguel.setId(proximoId++);
+
         aluguelRepository.salvar(aluguel);
 
         return aluguel;
-    }
-
-    public void removerAluguel(Long id) {
-        Aluguel aluguel = buscarAluguel(id);
-
-        for (Livro livro : aluguel.getLivros()) {
-            livro.setAlugado(false);
-        }
-
-        aluguelRepository.remover(aluguel);
     }
 
     public List<Aluguel> listarTodosAlugueis() {
@@ -78,6 +72,8 @@ public class AluguelService {
     }
 
     public List<Livro> listarLivrosAlugadosPorLocatario(Long locatarioId) {
+        locatarioService.buscarLocatario(locatarioId);
+
         List<Livro> livrosAlugadosPorLocatario = new ArrayList<>();
 
         for (Aluguel aluguel : aluguelRepository.getAlugueis()) {
@@ -89,6 +85,16 @@ public class AluguelService {
         }
 
         return livrosAlugadosPorLocatario;
+    }
+
+    public void removerAluguel(Long id) {
+        Aluguel aluguel = buscarAluguel(id);
+
+        for (Livro livro : aluguel.getLivros()) {
+            livro.setAlugado(false);
+        }
+
+        aluguelRepository.remover(aluguel);
     }
 
 }

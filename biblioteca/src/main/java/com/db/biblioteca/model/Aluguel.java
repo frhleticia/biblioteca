@@ -10,7 +10,7 @@ public class Aluguel {
     private List<Livro> livros;
     private Locatario locatario;
 
-    public Aluguel(LocalDate dataRetirada, LocalDate dataDevolucao, List<Livro> livros, Locatario locatario) {
+    public Aluguel(LocalDate dataRetirada, LocalDate dataDevolucao) {
         this.dataRetirada = dataRetirada;
         this.dataDevolucao = dataDevolucao;
     }
