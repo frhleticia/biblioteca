@@ -74,7 +74,7 @@ public class AluguelServiceTest {
     }
 
     @Test
-    void deveLancarExcecaoQuandoAluguelInexistente() {
+    void deveLancarExcecaoQuandoBuscarAluguelInexistente() {
         assertThrows(RuntimeException.class,
                 () -> aluguelService.buscarAluguel(999L));
     }
@@ -113,7 +113,7 @@ public class AluguelServiceTest {
     }
 
     @Test
-    void deveLancarExcecaoQuandoRemoverAluguelExistente() {
+    void deveLancarExcecaoQuandoRemoverAluguelInexistente() {
         assertThrows(RuntimeException.class,
                 () -> aluguelService.removerAluguel(999L));
     }
