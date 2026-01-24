@@ -85,6 +85,15 @@ public class LivroService {
 
     public void removerLivro(Long id) {
         Livro livro = buscarLivro(id);
+
+        if (livro == null) {
+            throw new RuntimeException("Livro não encontrado");
+        }
+
+        if (!livro.getAutores().isEmpty()) {
+            throw new RuntimeException("Livro possui autores vinculados");
+        }
+
         livroRepository.remover(livro);
     }
 
