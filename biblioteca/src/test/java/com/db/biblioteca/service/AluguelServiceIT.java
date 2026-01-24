@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AluguelServiceTest {
+public class AluguelServiceIT {
     private AluguelService aluguelService;
     private LocatarioService locatarioService;
     private LivroService livroService;

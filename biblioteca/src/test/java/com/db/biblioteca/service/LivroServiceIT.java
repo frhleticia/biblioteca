@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LivroServiceTest {
+public class LivroServiceIT {
     private LivroService livroService;
     private AutorService autorService;
 
